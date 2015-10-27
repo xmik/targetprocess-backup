@@ -5,13 +5,13 @@ Backup TargetProcess entities.
 ## Usage
 First, clone this repository. Then, you need to set up the environment:
 ```
-$ sudo apt-get install nodejs
-$ sudo apt-get install npm
+$ sudo apt-get install nodejs npm curl wget
 ```
 This command should be ran inside the directory with this git cloned repository:
 ```
 $ npm install tp-api
 ```
+Set valid credentials in `./credentials.js` and `./credentials.sh` files. Use some user who is an Admin.
 Run the bash script:
 ```
 $ run.sh
@@ -32,6 +32,7 @@ There is still stderr, which if all goes fine shows:
 ```
 Errors from the request:  null
 ```
+Some of them do not take parameters, we backup them all at once.
 
 #### Why the ranges
 As written on [dev.targetprocess.com](http://dev.targetprocess.com/rest/response_format): "You can not have more then 1000 items per request. If you set 'take' parameter greater than 1000, it will be treated as 1000 (including link generation). ", so we backup up to 999 entities in 1 request.
@@ -66,6 +67,16 @@ Since we have <60 attachments (27th October 2015), it is ok to take them all at 
 
 #### The entities not backuped:
 2. Dashboards (but views, reports and groups (directories) are backuped)
+
+### Experiments
+Use the file `test.js` to experiment using `tp-api`:
+```
+$ nodejs test.js
+```
+or the file `test.sh` to experiment using `curl`:
+```
+$ ./test.sh
+```
 
 ## Development
 Please read the [TP_API_knowledge_base.md](TP_API_knowledge_base.md), it contains examples using `tp-api` and curl.
