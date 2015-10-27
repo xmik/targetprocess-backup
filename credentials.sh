@@ -1,5 +1,5 @@
 #!/bin/bash
 
-TP_DOMAIN="mydomain.tpondemand.com"
-TP_USER="me"
-TP_PASSWORD="TODO"
+export TP_DOMAIN="mydomain.tpondemand.com"
+export TP_USER="me"
+export TP_PASSWORD="TODO"

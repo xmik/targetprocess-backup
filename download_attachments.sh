@@ -34,6 +34,7 @@ echo "Will download $ATTACHMENTS_COUNT attachments into $DOWNLOAD_DIR"
 
 mkdir -p $DOWNLOAD_DIR
 source "./credentials.sh"
+"./verify_credentials.sh"
 
 #for((n=0; n<$ATTACHMENTS_COUNT; n++))
 for((n=21; n<22; n++))
