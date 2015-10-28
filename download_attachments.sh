@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # This script uses jq to parse JSON file which contains TargetProcess
 # attachments metadata. jq documentation is at:
@@ -8,8 +9,6 @@
 # After parsing the file, the TargetProcess attachments are downloaded.
 # I discovered, there is no password or user needed for files download, but
 # I provide them for the sake that it may be changed in the future.
-
-set -e
 
 BACKUP_DIR=$1
 
@@ -22,6 +21,9 @@ if [ ! -d "$BACKUP_DIR" ]; then
   exit 1
 fi
 
+source "./credentials.sh"
+"./verify_credentials.sh"
+
 ATTACHMENTS_JSON="$BACKUP_DIR/attachments.json"
 DOWNLOAD_DIR="$BACKUP_DIR/attachments"
 
@@ -33,11 +35,8 @@ ATTACHMENTS_COUNT=$(cat $ATTACHMENTS_JSON | ./jq '.[].Id' | wc -l)
 echo "Will download $ATTACHMENTS_COUNT attachments into $DOWNLOAD_DIR"
 
 mkdir -p $DOWNLOAD_DIR
-source "./credentials.sh"
-"./verify_credentials.sh"
 
-#for((n=0; n<$ATTACHMENTS_COUNT; n++))
-for((n=21; n<22; n++))
+for((n=0; n<$ATTACHMENTS_COUNT; n++))
 {
   NAME=$(cat $ATTACHMENTS_JSON | ./jq ".[$n].Name")
   # get rid of first and last characters (quotes)
