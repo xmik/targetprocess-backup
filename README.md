@@ -28,6 +28,13 @@ $ ./run.sh
 ```
 Backup will be done in `/tmp/tp_backup`. Done 28th October 2015 took 6 minutes and 24MB.
 
+### Tar
+You can compress it:
+```
+$ cd /tmp
+/tmp$ tar -czf tp_backup-$(date +%Y-%m-%d).tar.gz ./tp_backup/
+```
+
 ### Verification
 An easy test is to use the `jq` program, which is downloaded by `run.sh`, so it should be in the current directory after backuping.
 
