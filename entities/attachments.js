@@ -10,6 +10,8 @@ var start_id = process.argv[2]
 var end_id = process.argv[3]
 
 tp('Attachments')
+  // or else only 25 are got
+  .take('1000')
   .sortBy('Id')
   .then(function(err, entities) {
     console.log(JSON.stringify(entities))

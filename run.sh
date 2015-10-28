@@ -58,7 +58,7 @@ done
 VIEWS_BACKUP_FILE="$BACKUP_DIR/views.json"
 echo "Backuping up views into $VIEWS_BACKUP_FILE"
 # comment the line below for dry run
-curl -X GET -u $TP_USER:$TP_PASSWORD https://$TP_DOMAIN/api/views/v1/?format=json > ${VIEWS_BACKUP_FILE}
+curl -X GET -u $TP_USER:$TP_PASSWORD "https://$TP_DOMAIN/api/views/v1/?take=1000&format=json" > ${VIEWS_BACKUP_FILE}
 # comment the line below for dry run
 ./download_attachments.sh $BACKUP_DIR
 

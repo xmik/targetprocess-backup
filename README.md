@@ -71,12 +71,13 @@ Since we have <60 attachments (27th October 2015), it is ok to take them all at 
 ### Experiments
 Use the file `test.js` to experiment using `tp-api`:
 ```
-$ nodejs test.js
+$ nodejs ./test/test.js
 ```
 or the file `test.sh` to experiment using `curl`:
 ```
-$ ./test.sh
+$ ./test/test.sh
 ```
+Those files are intended to be standalone (not depend on any other files).
 
 ## Development
 Please read the [TP_API_knowledge_base.md](TP_API_knowledge_base.md), it contains examples using `tp-api` and curl.

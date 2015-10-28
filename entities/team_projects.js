@@ -10,6 +10,8 @@ var start_id = process.argv[2]
 var end_id = process.argv[3]
 
 tp('TeamProjects')
+  // or else only 25 are got
+  .take('1000')
   .sortByDesc('Id')
   .append('Workflows-Count, Allocations-Count')
   .then(function(err, entities) {

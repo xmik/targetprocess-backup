@@ -26,8 +26,10 @@ var tp = require('tp-api')({
 
 ### General problems
 
-1. I had a problem with `curl` when using >1 parameter (using ampersands): **only the first parameter is respected**! (Or did I miss something?)
-Also, when there are [] in URL ([source](http://stackoverflow.com/questions/8333920/passing-a-url-with-brackets-to-curl)), you have to use curl `-g` option; when there are () in URL you have to take the URL in "".
+1. Curl:
+ * when using >1 parameter (using ampersands), take the URL in "" quotes, otherwise: **only the first parameter is respected**
+ * when there are [] in URL, you have to use `-g` option to turn off curl globbing, to allow [] usage ([source](http://stackoverflow.com/questions/8333920/passing-a-url-with-brackets-to-curl))
+* when there are () in URL you have to take the URL in ""
 2. This TP API filter is misleading:
 ```
 Find in list --> Id in (2782,2785)
@@ -57,11 +59,8 @@ tp('UserStories')
 ```
 
 #### Get all user stories but decide to "take" 1
-Should return the same as above example (only the request is a little different).
-
-Returns XML anyways:
 ```bash
-$ curl -X GET -u $TP_USER:$TP_PASSWORD https://$TP_DOMAIN/api/v1/UserStories?take=1&format=json
+$ curl -X GET -u "$TP_USER:$TP_PASSWORD https://$TP_DOMAIN/api/v1/UserStories?take=1&format=json"
 ```
 
 ```javascript
@@ -75,11 +74,8 @@ tp('UserStories')
 ```
 
 #### Get 1 user story with specified ID and additional fields
-Returns XML anyways:
 ```bash
-# -g to turn off curl globbing, to allow [] usage
-# http://stackoverflow.com/questions/8333920/passing-a-url-with-brackets-to-curl
-curl -X GET -u $TP_USER:$TP_PASSWORD -g https://$TP_DOMAIN/api/v1/UserStories/7517?append=[Bugs-Count,Tasks-Count,Comments-Count]&format=json
+curl -X GET -u $TP_USER:$TP_PASSWORD -g "https://$TP_DOMAIN/api/v1/UserStories/7517?append=[Bugs-Count,Tasks-Count,Comments-Count]&format=json"
 ```
 
 ```javascript

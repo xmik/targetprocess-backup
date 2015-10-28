@@ -24,4 +24,7 @@ TP_PASSWORD="TODO"
 # curl -X GET -g -u $TP_USER:$TP_PASSWORD "http://$TP_DOMAIN/api/v1/Features?where=(Id%20in%20(2782,2784))"
 
 # get metadata about 1 attachment
-curl -X GET -u $TP_USER:$TP_PASSWORD https://$TP_DOMAIN/api/v1/Attachments/22?format=json
+# curl -X GET -u $TP_USER:$TP_PASSWORD https://$TP_DOMAIN/api/v1/Attachments/22?format=json
+
+# get metadata about 2 Attachments
+curl -X GET -u $TP_USER:$TP_PASSWORD "https://$TP_DOMAIN/api/v1/Attachments/?take=2&format=json
