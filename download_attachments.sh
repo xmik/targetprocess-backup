@@ -21,7 +21,6 @@ if [ ! -d "$BACKUP_DIR" ]; then
   exit 1
 fi
 
-source "./credentials.sh"
 "./verify_credentials.sh"
 
 ATTACHMENTS_JSON="$BACKUP_DIR/attachments.json"

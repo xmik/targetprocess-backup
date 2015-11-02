@@ -3,12 +3,28 @@ set -e
 
 BACKUP_DIR="/tmp/tp_backup"
 
-source "./credentials.sh"
+if [ -f "./credentials.sh" ]; then
+  source "./credentials.sh"
+fi
+
 "./verify_credentials.sh"
+
+# generate js file with credentials
+echo "var tp = require('tp-api')({
+           domain:   '$TP_DOMAIN',
+           username: '$TP_USER',
+           password: '$TP_PASSWORD'
+         })
+
+
+// export the variable
+// http://stackoverflow.com/questions/3922994/share-variables-between-files-in-node-js
+exports.tp = tp;
+" > "./credentials.js"
 
 START_DATE=$(date)
 
-rm -r $BACKUP_DIR
+rm -rf $BACKUP_DIR
 mkdir -p $BACKUP_DIR
 
 # Download metadata about those entities in many requests (each containing less

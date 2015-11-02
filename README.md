@@ -3,30 +3,37 @@
 Backup TargetProcess entities.
 
 ## Usage
+### Environment
 First, clone this repository. Then, you need to set up the environment:
 ```
 $ sudo apt-get install nodejs npm curl wget
 ```
-The following command should be ran in the directory with this git cloned repository.
-  * If `tp-api` 1.0.6 is already released at [www.npmjs.com](https://www.npmjs.com/package/tp-api):
-  ```
-  $ npm install tp-api
-  ```
-  * otherwise:
-  ```
-  $ mkdir -p node_modules/ && cd node_modules/
-  $ git clone https://github.com/8bitDesigner/tp-api.git && cd tp-api/
-  $ npm install
-  ```
+The following command should be ran in the directory with this git cloned repository, we need `tp-api` at least 1.0.6:
+```
+$ npm install tp-api
+```
 
 You can verify that `tp-api` is invokable by running `.test/test.js`, see [#Development#Experiments](#experiments)
 
-Set valid credentials in `./credentials.js` and `./credentials.sh` files. Use some user who is a TargetProcess Admin.
-Run the main backup script:
+### Run
+Run the main backup script, passing the credentials as environment variables. Use some user who is a TargetProcess Admin.:
+```
+$ TP_USER=me TP_DOMAIN=my-domain.tpondemand.com TP_PASSWORD=TODO ./run.sh
+```
+If you don't like passing your credentials as environment variables, you can instead create a local file: `./credentials.sh`, example:
+```
+#!/bin/bash
+
+export TP_DOMAIN="my-domain.tpondemand.com"
+export TP_USER="me"
+export TP_PASSWORD="TODO"
+```
+and run the script:
 ```
 $ ./run.sh
 ```
-Backup will be done in `/tmp/tp_backup`. Done 28th October 2015 took 6 minutes and 24MB.
+
+Backup will be done in `/tmp/tp_backup`.
 
 ### Tar
 You can compress it:
@@ -54,7 +61,9 @@ $ cat /tmp/tp_backup/features_6308_7208.json | ./jq '.[].Name'
 ```
 /tmp/tp_backup/
   attachments/
-  assignments_1_901.json
+    my_attachment1.png          # here goes real name of your attachment
+    my_attachment2.txt
+  assignments_1_901.json        # metadata about attachments
   assignments_902_1802.json
   assignments_1803_2703.json
   ...
@@ -121,3 +130,15 @@ or the file `test.sh` to experiment using `curl`:
 $ ./test/test.sh
 ```
 Those files are intended to be standalone (not depend on any other files).
+
+### Use newer `tp-api` version
+If you want to use unreleased `tp-api` version, instead of
+```
+$ npm install tp-api
+```
+run:
+```
+$ mkdir -p node_modules/ && cd node_modules/
+$ git clone https://github.com/8bitDesigner/tp-api.git && cd tp-api/
+$ npm install
+```
