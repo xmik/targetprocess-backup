@@ -1,63 +1,12 @@
-# TP backup
+# targetprocess-backup
 
 Backup TargetProcess entities.
 
-## Usage
-### Environment
-First, clone this repository. Then, you need to set up the environment:
-```
-$ sudo apt-get install nodejs npm curl wget
-```
-The following command should be ran in the directory with this git cloned repository, we need `tp-api` at least 1.0.6:
-```
-$ npm install tp-api
-```
+## What it does
+This project backups TargetProcess entities like user stories, features and saves information about them in `.json` files. It also downloads attachments. Uses TargetProcess REST API.
 
-You can verify that `tp-api` is invokable by running `.test/test.js`, see [#Development#Experiments](#experiments)
-
-### Run
-Run the main backup script, passing the credentials as environment variables. Use some user who is a TargetProcess Admin.:
-```
-$ TP_USER=me TP_DOMAIN=my-domain.tpondemand.com TP_PASSWORD=TODO ./run.sh
-```
-If you don't like passing your credentials as environment variables, you can instead create a local file: `./credentials.sh`, example:
-```
-#!/bin/bash
-
-export TP_DOMAIN="my-domain.tpondemand.com"
-export TP_USER="me"
-export TP_PASSWORD="TODO"
-```
-and run the script:
-```
-$ ./run.sh
-```
-
-Backup will be done in `/tmp/tp_backup`.
-
-### Tar
-You can compress it:
-```
-$ cd /tmp
-/tmp$ tar -czf tp_backup-$(date +%Y-%m-%d).tar.gz ./tp_backup/
-```
-
-### Verification
-An easy test is to use the `jq` program, which is downloaded by `run.sh`, so it should be in the current directory after backuping.
-
-To get all the IDs of some entity objects in a file:
-```
-$ cat /tmp/tp_backup/features_2704_3604.json | ./jq '.[].Id'
-```
-To get names:
-```
-$ cat /tmp/tp_backup/features_6308_7208.json | ./jq '.[].Name'
-```
-
-### Details
-*You don't have to read it if you only want to create backup*
-
-#### Backup directory structure
+### Backup directory structure
+Backup will be done into `/tmp/tp_backup`.
 ```
 /tmp/tp_backup/
   attachments/
@@ -77,6 +26,85 @@ $ cat /tmp/tp_backup/features_6308_7208.json | ./jq '.[].Name'
   ...
 ```
 The entities objects are sorted in descending order (except for Attachments for which that option does not work and there is a [public issue](https://tp3.uservoice.com/forums/174654-we-will-rock-you/suggestions/6312209-improve-rest-api-support-operations-for-attachmen) for that).
+For each entity type which is backuped, there is a javascript file in `./entities` directory. Additionally: all the views are backuped using `curl`.
+
+### The entities not backuped
+Dashboards are not backuped. But they are made of views, reports and groups (directories), which are backuped.
+
+## Usage
+### Without Docker
+#### Environment
+Set up the environment:
+```
+$ sudo apt-get install curl
+$ curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+$ sudo apt-get install nodejs npm wget
+```
+Then, clone this repository. In the directory where you cloned this repository, run:
+```
+$ npm install tp-api@1.0.6
+```
+
+#### Run
+Run the main backup script, passing the credentials as environment variables. Use some user who is a TargetProcess Admin.:
+```
+$ TP_USER=me TP_DOMAIN=my-domain.tpondemand.com TP_PASSWORD=TODO ./run.sh
+```
+If you don't like passing your credentials as environment variables, you can instead create a local file: `./credentials.sh`, example:
+```
+#!/bin/bash
+
+export TP_DOMAIN="my-domain.tpondemand.com"
+export TP_USER="me"
+export TP_PASSWORD="TODO"
+```
+and run the script:
+```
+$ ./run.sh
+```
+
+#### Test run
+Instead of running the full backup, you can invoke a bash script which  downloads metadata about some TargetProcess features. Use it in order to test if your environment is correctly set and if you can connect to TargetProcess API.
+```
+$ TP_USER=me TP_DOMAIN=my-domain.tpondemand.com TP_PASSWORD=TODO ./test/test_run.sh
+```
+
+### With Docker
+1. Build the image:
+```
+tp_backup$ docker build -t "targetprocess-backup:$(cat version.txt)" .
+```
+2. Run the image:
+```
+docker run -ti --volume=/tmp/tp_backup:/tmp/tp_backup --env TP_DOMAIN="my-domain.tpondemand.com" --env TP_USER="me" --env TP_PASSWORD="TODO" targetprocess-backup:$(cat version.txt)
+```
+
+To test the docker image and not run the full backup:
+```
+docker run -ti --volume=/tmp/tp_backup:/tmp/tp_backup --env TP_DOMAIN="my-domain.tpondemand.com" --env TP_USER="me" --env TP_PASSWORD="TODO" targetprocess-backup:$(cat version.txt) /opt/tp_backup/test/test_run.sh
+```
+
+### Tar
+To compress the backup:
+```
+$ cd /tmp
+/tmp$ tar -czf tp_backup-$(date +%Y-%m-%d).tar.gz ./tp_backup/
+```
+
+### Verification
+An easy test is to use the `jq` program, which is downloaded by `run.sh`, so it should be in the current directory after backuping.
+
+To get all the IDs of some entity objects in a file:
+```
+$ cat /tmp/tp_backup/features_2704_3604.json | ./jq '.[].Id'
+```
+To get names:
+```
+$ cat /tmp/tp_backup/features_6308_7208.json | ./jq '.[].Name'
+```
+
+### Details
+*You don't have to read it if you only want to create backup*
 
 #### Backup only Features
 Each entity type that will be backuped has its own file in `./entities` directory. Example file is: `./entities/features.js`. That file takes 2 command line parameters: the start ID and the end ID. They specify a range (inclusive) in which we look for entity objects. Each of those files in `./entities` directory can be invoked separately. For example, to backup features of IDs from 100 to 150, run:
@@ -109,12 +137,7 @@ There is some trouble around getting Attachments (#7537 and [this open bug](http
   * get metadata about all attachments at a time using curl
   * get metadata about all attachments at a time using `tp-api`
 
-
-Since we have <60 attachments (28th October 2015), it is ok to get them all at once.
-
-#### The entities not backuped:
-Dashboards are not backuped. But they are made of views, reports and groups (directories), which are backuped.
-
+Since we have <60 attachments (28th October 2015), it is ok to get metadata about them all at once.
 
 ## Development
 

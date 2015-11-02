@@ -11,14 +11,14 @@ Public sources:
 ### Set credentials
 For `curl` set:
 ```bash
-TP_DOMAIN="mydomain.tpondemand.com"
+TP_DOMAIN="my-domain.tpondemand.com"
 TP_USER="me"
 TP_PASSWORD="TODO"
 ```
 For `tp-api`:
 ```javascript
 var tp = require('tp-api')({
-           domain:   'mydomain.tpondemand.com',
+           domain:   'my-domain.tpondemand.com',
            username: 'me',
            password: 'TODO'
          })

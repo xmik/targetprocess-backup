@@ -3,6 +3,11 @@ set -e
 
 BACKUP_DIR="/tmp/tp_backup"
 
+# http://mywiki.wooledge.org/BashFAQ/028
+# step into the directory with this script in order to use relative
+# paths to other scripts
+cd "${BASH_SOURCE%/*}" || exit
+
 if [ -f "./credentials.sh" ]; then
   source "./credentials.sh"
 fi
