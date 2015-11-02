@@ -1,7 +1,7 @@
 #!/bin/bash
 # Test if credentials are set and if environment is set
-
 set -e
+BACKUP_DIR="/tmp/tp_backup/test"
 
 # http://mywiki.wooledge.org/BashFAQ/028
 # step into the directory with this script in order to use relative
@@ -27,7 +27,10 @@ echo "var tp = require('tp-api')({
 exports.tp = tp;
 " > "../credentials.js"
 
-BACKUP_FILE="/tmp/tp_backup/test.json"
+rm -rf $BACKUP_DIR
+mkdir -p $BACKUP_DIR
+
+BACKUP_FILE="${BACKUP_DIR}/test.json"
 nodejs ../entities/features.js 2700 3000 > $BACKUP_FILE
 
 echo "Success, downloaded features of ids: 2700 to 3000 into $BACKUP_FILE"

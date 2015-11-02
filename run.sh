@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-BACKUP_DIR="/tmp/tp_backup"
+BACKUP_DIR="/tmp/tp_backup/full"
 
 # http://mywiki.wooledge.org/BashFAQ/028
 # step into the directory with this script in order to use relative

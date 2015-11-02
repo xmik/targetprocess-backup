@@ -1,3 +1,8 @@
+## 0.0.3
+
+* fix bug: in docker cannot remove `/tmp/tp_backup` when it is mounted as a docker volume
+* make `test_run.sh` closer to production `run.sh`: remove and create the backup directory
+
 ## 0.0.2
 
 * support running in Docker

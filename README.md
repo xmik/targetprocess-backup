@@ -6,9 +6,9 @@ Backup TargetProcess entities.
 This project backups TargetProcess entities like: user stories, features and saves information about them in `.json` files. It also downloads attachments. Uses TargetProcess REST API.
 
 ### Backup directory structure
-Backup will be done into `/tmp/tp_backup`.
+Backup will be done into `/tmp/tp_backup/full`.
 ```
-/tmp/tp_backup/
+/tmp/tp_backup/full/
   attachments/
     my_attachment1.png          # here goes real name of your attachment
     my_attachment2.txt
@@ -69,6 +69,7 @@ Instead of running the full backup, you can invoke a bash script which  download
 $ TP_USER=me TP_DOMAIN=mydomain.tpondemand.com TP_PASSWORD=TODO ./test/test_run.sh
 ```
 
+Result will be saved to: `/tmp/tp_backup/test`
 ### With Docker
 1. Build the image:
 ```
@@ -103,11 +104,11 @@ An easy test is to use the `jq` program, which is downloaded by `run.sh`, so it 
 
 To get all the IDs of some entity objects in a file:
 ```
-$ cat /tmp/tp_backup/features_2704_3604.json | ./jq '.[].Id'
+$ cat /tmp/tp_backup/full/features_2704_3604.json | ./jq '.[].Id'
 ```
 To get names:
 ```
-$ cat /tmp/tp_backup/features_6308_7208.json | ./jq '.[].Name'
+$ cat /tmp/tp_backup/full/features_6308_7208.json | ./jq '.[].Name'
 ```
 
 ### Details
