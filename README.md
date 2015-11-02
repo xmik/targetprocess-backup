@@ -3,7 +3,7 @@
 Backup TargetProcess entities.
 
 ## What it does
-This project backups TargetProcess entities like user stories, features and saves information about them in `.json` files. It also downloads attachments. Uses TargetProcess REST API.
+This project backups TargetProcess entities like: user stories, features and saves information about them in `.json` files. It also downloads attachments. Uses TargetProcess REST API.
 
 ### Backup directory structure
 Backup will be done into `/tmp/tp_backup`.
@@ -48,13 +48,13 @@ $ npm install tp-api@1.0.6
 #### Run
 Run the main backup script, passing the credentials as environment variables. Use some user who is a TargetProcess Admin.:
 ```
-$ TP_USER=me TP_DOMAIN=my-domain.tpondemand.com TP_PASSWORD=TODO ./run.sh
+$ TP_USER=me TP_DOMAIN=mydomain.tpondemand.com TP_PASSWORD=TODO ./run.sh
 ```
 If you don't like passing your credentials as environment variables, you can instead create a local file: `./credentials.sh`, example:
 ```
 #!/bin/bash
 
-export TP_DOMAIN="my-domain.tpondemand.com"
+export TP_DOMAIN="mydomain.tpondemand.com"
 export TP_USER="me"
 export TP_PASSWORD="TODO"
 ```
@@ -66,7 +66,7 @@ $ ./run.sh
 #### Test run
 Instead of running the full backup, you can invoke a bash script which  downloads metadata about some TargetProcess features. Use it in order to test if your environment is correctly set and if you can connect to TargetProcess API.
 ```
-$ TP_USER=me TP_DOMAIN=my-domain.tpondemand.com TP_PASSWORD=TODO ./test/test_run.sh
+$ TP_USER=me TP_DOMAIN=mydomain.tpondemand.com TP_PASSWORD=TODO ./test/test_run.sh
 ```
 
 ### With Docker
@@ -76,19 +76,26 @@ tp_backup$ docker build -t "targetprocess-backup:$(cat version.txt)" .
 ```
 2. Run the image:
 ```
-docker run -ti --volume=/tmp/tp_backup:/tmp/tp_backup --env TP_DOMAIN="my-domain.tpondemand.com" --env TP_USER="me" --env TP_PASSWORD="TODO" targetprocess-backup:$(cat version.txt)
+docker run -ti --volume=/tmp/tp_backup:/tmp/tp_backup --env TP_DOMAIN="mydomain.tpondemand.com" --env TP_USER="me" --env TP_PASSWORD="TODO" targetprocess-backup:$(cat version.txt)
 ```
 
 To test the docker image and not run the full backup:
 ```
-docker run -ti --volume=/tmp/tp_backup:/tmp/tp_backup --env TP_DOMAIN="my-domain.tpondemand.com" --env TP_USER="me" --env TP_PASSWORD="TODO" targetprocess-backup:$(cat version.txt) /opt/tp_backup/test/test_run.sh
+docker run -ti --volume=/tmp/tp_backup:/tmp/tp_backup --env TP_DOMAIN="mydomain.tpondemand.com" --env TP_USER="me" --env TP_PASSWORD="TODO" targetprocess-backup:$(cat version.txt) /opt/tp_backup/test/test_run.sh
 ```
+
+### Output
+Anywhere you see:
+```
+Errors from the request:  null
+```
+that means there were no errors from a REST API request.
 
 ### Tar
 To compress the backup:
 ```
 $ cd /tmp
-/tmp$ tar -czf tp_backup-$(date +%Y-%m-%d).tar.gz ./tp_backup/
+/tmp$ tar -czf tp_backup-$(date +%Y-%m-%d).tar.gz tp_backup/
 ```
 
 ### Verification
@@ -137,7 +144,7 @@ There is some trouble around getting Attachments (#7537 and [this open bug](http
   * get metadata about all attachments at a time using curl
   * get metadata about all attachments at a time using `tp-api`
 
-Since we have <60 attachments (28th October 2015), it is ok to get metadata about them all at once.
+Since we have <60 attachments (28th October 2015), it is ok to get metadata about them all at once. I don't think this will change. Each of them is downloaded separately anyway.
 
 ## Development
 

@@ -11,14 +11,14 @@ Public sources:
 ### Set credentials
 For `curl` set:
 ```bash
-TP_DOMAIN="my-domain.tpondemand.com"
+TP_DOMAIN="mydomain.tpondemand.com"
 TP_USER="me"
 TP_PASSWORD="TODO"
 ```
 For `tp-api`:
 ```javascript
 var tp = require('tp-api')({
-           domain:   'my-domain.tpondemand.com',
+           domain:   'mydomain.tpondemand.com',
            username: 'me',
            password: 'TODO'
          })
@@ -40,7 +40,7 @@ Find in list --> Id in (2782,2785)
     ```
     curl -X GET -g -u $TP_USER:$TP_PASSWORD "http://$TP_DOMAIN/api/v1/Features?where=(Id%20in%20(2782,2784))"
     ```
-    Instead, use: `'(Id gte 2782) and (Id lte 2785)'`.
+    Instead, to get all the entities within range, use: `'(Id gte 2782) and (Id lte 2785)'`.
 
 ### Example requests
 #### Get 1 user story with specified ID
@@ -110,7 +110,7 @@ tp('UserStories')
   }
 )
 ```
-but then all of the default fields from response are not returned, only the once listed here (plucked). This makes sense for AssignedUser, because it returns an array of users, but in ohter cases (e.g. Times) it returns an array of IDs. So anyway, we still need to get e.g. `tp('Times')` to see how much time was spent and the description. Furthermore, this approach would demand to list all the collections explicitly, thus I prefer to get default response. We'll anyway request for entities like: Times separately.
+but then all of the default fields from response are not returned, only the once listed here (plucked). This makes sense for AssignedUser, because it returns an array of users, but in other cases (e.g. Times) it returns an array of IDs. So anyway, we still need to get e.g. `tp('Times')` to see how much time was spent and the description. Furthermore, this approach would demand to list all the collections explicitly, thus I prefer to get default response. We'll anyway request for entities like: Times separately.
 
 Another reason, why not use this: I think it creates **additional request for each user story** to get its 1 Collection of Entities. So it is **inefficient** and could easily go above 1000 items in a request: "You can not have more then 1000 items per request. If you set 'take' parameter greater than 1000, it will be treated as 1000 (including link generation)". [source](http://dev.targetprocess.com/rest/response_format). Furthermore, I don't think such a solution would be easier to restore (in the future).
 
@@ -121,7 +121,7 @@ Links:
 * http://dev.targetprocess.com/rest/storage
 * https://md5.tpondemand.com/api/docs/views/v1/index.aspx
 
-I think we'll use this to get all the views:
+We'll use this to get all the views:
 ```bash
 curl -X GET -u $TP_USER:$TP_PASSWORD https://$TP_DOMAIN/api/views/v1/?format=json
 ```
@@ -196,11 +196,11 @@ $ curl -X GET -u $TP_USER:$TP_PASSWORD https://$TP_DOMAIN/api/v1/Attachments/22?
 
 Here, we need to parse the response. Then you can download the attachment, the `-O` option is needed to save to file:
 ```bash
-curl -X GET -u $TP_USER:$TP_PASSWORD -O https://mydomain.tpondemand.com/Attachment.aspx?AttachmentID=22
+curl -X GET -u $TP_USER:$TP_PASSWORD -O https://$TP_DOMAIN/Attachment.aspx?AttachmentID=22
 ```
 It will be saved under pretty name: `Attachment.aspx?AttachmentID=22`. Use this command to save it under custom name:
 ```bash
-curl -X GET -u $TP_USER:$TP_PASSWORD -o brutus_3_2_0_swapper.txt https://mydomain.tpondemand.com/Attachment.aspx?AttachmentID=22
+curl -X GET -u $TP_USER:$TP_PASSWORD -o brutus_3_2_0_swapper.txt https://$TP_DOMAIN/Attachment.aspx?AttachmentID=22
 ```
 
 I suggest to first get all the attachments list and then parse the response(s) and download each attachment separately.

@@ -1,7 +1,7 @@
 // Experiment with tp-api and TargetProcess REST API
 
 var tp = require('tp-api')({
-           domain:   'my-domain.tpondemand.com',
+           domain:   'mydomain.tpondemand.com',
            username: 'me',
            password: 'TODO'
          })
