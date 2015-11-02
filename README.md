@@ -144,7 +144,7 @@ There is some trouble around getting Attachments (#7537 and [this open bug](http
   * get metadata about all attachments at a time using curl
   * get metadata about all attachments at a time using `tp-api`
 
-Since we have <60 attachments (28th October 2015), it is ok to get metadata about them all at once. I don't think this will change. Each of them is downloaded separately anyway.
+Since we have less than 60 attachments (28th October 2015), it is ok to get metadata about them all at once. I don't think this will change. Each of them is downloaded separately anyway.
 
 ## Development
 
@@ -172,3 +172,7 @@ $ mkdir -p node_modules/ && cd node_modules/
 $ git clone https://github.com/8bitDesigner/tp-api.git && cd tp-api/
 $ npm install
 ```
+
+## License
+
+Licensed under the MIT license. See LICENSE for details.
